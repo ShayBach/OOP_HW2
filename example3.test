@@ -1,0 +1,11 @@
+# Problem set 3 testing file -- for multiple sources and sinks
+CreateNode n1 10
+CreateNode n3 1
+CreateGraph A
+AddNode A n1
+CreateNode n2 5
+AddNode A n2 
+AddNode A n3
+AddEdge A n3 n1 
+AddEdge A n3 n2
+FindPath A n3 -> n2 n1

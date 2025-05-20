@@ -1,0 +1,11 @@
+# Problem set 3 testing file -- for multiple sources and sinks
+created node n1 with cost 10
+created node n3 with cost 1
+created graph A
+added node n1 to A
+created node n2 with cost 5
+added node n2 to A
+added node n3 to A
+added edge from n3 to n1 in A
+added edge from n3 to n2 in A
+shortest path in A: n3 n2
