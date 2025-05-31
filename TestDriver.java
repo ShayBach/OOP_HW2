@@ -167,7 +167,7 @@ public class TestDriver {
 		Graph<WeightedNode> graph = graphs.get(graphName);
 		WeightedNode node = nodes.get(nodeName);
 		graph.addNode(node);
-		output.println("Added node " + nodeName + " to " + graphName);
+		output.println("added node " + nodeName + " to " + graphName);
   		
   	}
 
@@ -194,8 +194,8 @@ public class TestDriver {
 		WeightedNode parent = nodes.get(parentName);
 		WeightedNode child = nodes.get(childName);
 		graph.addEdge(parent, child);
-		output.println("Added edge from " + parentName +
-				" to " + childName + "in " + graphName);
+		output.println("added edge from " + parentName +
+				" to " + childName + " in " + graphName);
 
   	}
 
@@ -322,10 +322,10 @@ public class TestDriver {
 		}
 		StringBuilder outStr = new StringBuilder();
 		if (currentCost == Double.MAX_VALUE) {
-			outStr.append("No path found in " + graphName);
+			outStr.append("no path found in " + graphName);
 		}
 		else {
-			outStr.append("Shortest path in " + graphName + ":");
+			outStr.append("shortest path in " + graphName + ": ");
 			for (WeightedNode weightedNode : optPath) {
 				outStr.append(weightedNode.getName()).append(" ");
 			}

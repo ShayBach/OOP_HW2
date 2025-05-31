@@ -8,7 +8,7 @@ import java.util.*;
  *
  * @param <T> the type of nodes in the graph
  */
-public class PathFinder<T> {
+public class PathFinder<T extends Comparable<? super T>> {
 
     /**
      * Representation Invariant:

@@ -7,7 +7,7 @@ import java.util.*;
  * Every edge is going from parent to child
  * The class contains functions that adds nodes and edges to the graph
  */
-public class Graph<T> {
+public class Graph< T extends Comparable<? super T>> {
 
     /**
      * Representation Invariant:
@@ -108,11 +108,11 @@ public class Graph<T> {
      * Returns a sorted list of the children for the given node.
      * @requires node exists in the graph and parent != null
      */
-    public ArrayList<T> getListChildren(T node) {
+    public List<T> getListChildren(T node) {
         checkRep();
         assert node != null;
         Set<T> nodeSet = this.nodesList.get(node);
-        ArrayList<T> sortedNodes = new ArrayList<>(nodeSet);
+        List<T> sortedNodes = new ArrayList<>(nodeSet);
         Collections.sort(sortedNodes);
         return sortedNodes;
     }
@@ -153,6 +153,7 @@ public class Graph<T> {
         checkRep();
         return nodesList.size();
     }
+
 
     /**
      * Returns whether this graph is empty.
