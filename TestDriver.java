@@ -193,9 +193,11 @@ public class TestDriver {
 		Graph<WeightedNode> graph = graphs.get(graphName);
 		WeightedNode parent = nodes.get(parentName);
 		WeightedNode child = nodes.get(childName);
-		graph.addEdge(parent, child);
-		output.println("added edge from " + parentName +
-				" to " + childName + " in " + graphName);
+		boolean result = graph.addEdge(parent, child);
+		if (result) {
+			output.println("added edge from " + parentName +
+					" to " + childName + " in " + graphName);
+		}
 
   	}
 

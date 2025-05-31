@@ -1,0 +1,45 @@
+# Multiple input Multiple output path Testing file
+
+# Create a graph
+CreateGraph graph1
+
+# Add a pair of nodes
+CreateNode n1 1
+CreateNode n2 3
+CreateNode n3 8
+CreateNode n4 2
+CreateNode n5 1
+CreateNode n6 2
+CreateNode n7 1
+AddNode graph1 n1
+AddNode graph1 n2
+AddNode graph1 n4
+AddNode graph1 n3
+AddNode graph1 n5
+AddNode graph1 n4 // check forums reply
+AddNode graph1 n7
+AddNode graph1 n6
+
+# Add edges
+AddEdge graph1 n1 n2
+AddEdge graph1 n1 n3
+AddEdge graph1 n2 n4
+AddEdge graph1 n2 n3
+AddEdge graph1 n4 n6
+AddEdge graph1 n4 n5
+AddEdge graph1 n3 n5
+AddEdge graph1 n6 n7
+AddEdge graph1 n5 n7
+
+# Print some stuff
+ListNodes graph1
+ListChildren graph1 n1
+ListChildren graph1 n2
+ListChildren graph1 n3
+ListChildren graph1 n4
+ListChildren graph1 n5
+ListChildren graph1 n6
+ListChildren graph1 n7
+
+# Find a path
+FindPath graph1 n1 n2 n3 -> n7 n6 n5

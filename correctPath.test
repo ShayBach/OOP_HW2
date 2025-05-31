@@ -1,13 +1,13 @@
-# Shortest path Testing file
+# Correct Path Testing file
 
 # Create a graph
 CreateGraph graph1
 
 # Add a pair of nodes
-CreateNode n1 1
-CreateNode n2 3
-CreateNode n3 4
-CreateNode n4 2
+CreateNode n1 3
+CreateNode n2 1
+CreateNode n3 2
+CreateNode n4 5
 AddNode graph1 n1
 AddNode graph1 n2
 AddNode graph1 n3
@@ -16,8 +16,8 @@ AddNode graph1 n4
 # Add edges
 AddEdge graph1 n1 n2
 AddEdge graph1 n1 n3
-AddEdge graph1 n2 n4
 AddEdge graph1 n3 n4
+
 
 # Print some stuff
 ListNodes graph1
@@ -28,4 +28,3 @@ ListChildren graph1 n4
 
 # Find a path
 FindPath graph1 n1 -> n4
-FindPath graph1 n4 -> n1
