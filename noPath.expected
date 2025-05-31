@@ -3,7 +3,6 @@
 # Create a graph
 created graph graph1
 
-
 # Add a pair of nodes
 created node n1 with cost 5
 created node n2 with cost 5

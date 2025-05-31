@@ -219,11 +219,12 @@ public class TestDriver {
 		Graph<WeightedNode> graph = graphs.get(graphName);
 		ArrayList<WeightedNode> nodes = graph.getListNodes();
 		StringBuilder outStr = new StringBuilder();
-		outStr.append(graphName).append(" contains: ");
+		outStr.append(graphName).append(" contains:");
 		//Adding the nodes names
 		for (WeightedNode node : nodes) {
-			outStr.append(node.getName()).append(" ");
+			outStr.append(" ").append(node.getName());
 		}
+
 		output.println(outStr);
   	}
 
@@ -250,10 +251,10 @@ public class TestDriver {
 		StringBuilder outStr = new StringBuilder();
 		outStr.append("the children of ");
 		outStr.append(parentName).append(" in ");
-		outStr.append(graphName).append(" are: ");
+		outStr.append(graphName).append(" are:");
 		//Adding the children names
 		for (WeightedNode node : nodes) {
-			outStr.append(node.getName()).append(" ");
+			outStr.append(" ").append(node.getName());
 		}
 		output.println(outStr);
   		
@@ -327,10 +328,11 @@ public class TestDriver {
 			outStr.append("no path found in " + graphName);
 		}
 		else {
-			outStr.append("shortest path in " + graphName + ": ");
+			outStr.append("shortest path in " + graphName + ":");
 			for (WeightedNode weightedNode : optPath) {
-				outStr.append(weightedNode.getName()).append(" ");
+				outStr.append(" ").append(weightedNode.getName());
 			}
+
 		}
 		output.println(outStr);
 	  }
