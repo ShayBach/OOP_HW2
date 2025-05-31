@@ -1,18 +1,17 @@
 package homework2;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
- * A directed graph where T is the type of each node and each edge in the graph
- * All edges of the node are unique and all nodes are unique.
+ * A directed graph where T is the type of each node
+ * Every edge is going from parent to child
+ * The class contains functions that adds nodes and edges to the graph
  */
 public class Graph<T> {
 
     /**
      * Representation Invariant:
-     * nodesList != null
+     * name != null
      * no null keys or values in nodesList
      * all children sets are not null and contain no nulls
      */
@@ -21,49 +20,54 @@ public class Graph<T> {
      * Abstraction Function:
      * A Graph<T> is a directed graph G = (V, E)
      * where V = nodesList.keySet()
-     * and for each v in V, nodesList.get(v) contains the set of children of v
+     * An edge is the connection of the child being in parents map
      */
 
-    private HashMap<T, Node<T>> nodesList;
+    //private final String name;
+    private final HashMap<T, Set<T>> nodesList;
 
     /**
      * Checks the Representation Invariant
      */
     private void checkRep() {
-        assert nodesjList != null;
-        for (Map.Entry<T, Node<T>> entry : nodes.entrySet()) {
-            assert entry.getKey() != null;
-            assert entry.getValue() != null;
+        //assert this.name != null;
+        assert nodesList != null : "nodesList cannot be null";
+        for (T node : nodesList.keySet()) {
+            assert node != null : "nodes cannot be null";
+            assert nodesList.get(node) != null : "nodes sets cannot be null";
+
+            for (T child : nodesList.get(node)) {
+                assert child != null : "child nodes cannot be null";
+            }
         }
     }
 
-    /**
-     * Constructs an empty graph
-     * @effects creates an empty graph with no nodes or edges
-     */
     public Graph() {
         nodesList = new HashMap<>();
+        //this.name = name;
         checkRep();
     }
 
-    /**
-     * Adds a node to the graph. No effect if already exists.
-     * @requires node != null
-     * @modifies this
-     * @throws IllegalArgumentException if there is already node with the give node label
-     * @effects adds the node to the graph if it doesn't already exist
-     */
-    public void addNode(T nodeLabel, Object nodeType)  throws  IllegalArgumentException{
+    /*public String getName() {
         checkRep();
-        assert nodeLabel != null;
-        assert nodeType != null;
+        return this.name;
+    }*/
 
+    /**
+     * Adds a node to the graph.
+     * @requires node != null and the node doesn't exist yet in the graph
+     * @modifies this
+     * @effects adds the node to the graph if it doesn't already exist
+     * @throws IllegalArgumentException when node already exists
+     */
+    public void addNode(T node) {
+        checkRep();
+        assert node != null;
         // adds the node if it doesn't already exist
-        if(this.nodesList.containsKey(nodeLabel)) {
+        if(this.nodesList.containsKey(node)) {
             throw new IllegalArgumentException("The node already exists");
         }
-        Node<T> newNode = new Node<>(nodeLabel, nodeType);
-        this.nodesList.put(nodeLabel, newNode);
+        this.nodesList.put(node, new HashSet<>());
         checkRep();
     }
 
@@ -73,126 +77,89 @@ public class Graph<T> {
      * @modifies this
      * @effects adds a directed edge from parent to child node
      */
-    public void addEdge(T parent, T child, T edgeLabel) {
+    public boolean addEdge(T parent, T child) {
         checkRep();
-        assert parent != null;
-        assert child != null;
-        assert edgeLabel != null;
-        /**
-         * check if the parent or the child don't exist
-         */
-        assert nodesList.containsKey(parent);
-        assert nodesList.containsKey(child);
-
-        Node<T> parentNode = nodesList.get(parent);
-        Node<T> childNode = nodesList.get(child);
-        parentNode.addChild(childNode, edgeLabel);
+        if (parent == null || child == null) {
+            throw new IllegalArgumentException("Nodes cannot be null");
+        }
+        if (!nodesList.containsKey(parent) || !nodesList.containsKey(child)) {
+            throw new IllegalArgumentException("Both nodes must be in the graph");
+        }
+        boolean added = nodesList.get(parent).add(child);
         checkRep();
+        return added;
     }
 
     /**
-     * Returns a sorted list of all nodes in the graph.
-     * @requires all nodes are Comparable
-     * @modifies nothing
-     * @effects returns a new list containing all nodes in sorted order
+     * Returns a sorted list to all nodes in the graph.
      */
-    public ArrayList<T> listNodes() {
+    public ArrayList<T> getListNodes() {
         checkRep();
 
-        ArrayList<T> nodes = new ArrayList<>(nodesList.keySet());
-        Collections.sort((ArrayList) nodes);
+        Set<T> nodeSet = this.nodesList.keySet();
+        ArrayList<T> sortedNodes = new ArrayList<>(nodeSet);
+        Collections.sort(sortedNodes);
 
-        return nodes;
+        return sortedNodes;
     }
 
+
     /**
-     * Returns a sorted list of parents (nodes pointing to this node).
-     * @requires node != null and exists in the graph
-     * @modifies nothing
-     * @effects returns a list of nodes that have an edge to nodeLabel
+     * Returns a sorted list of the children for the given node.
+     * @requires node exists in the graph and parent != null
      */
-    public ArrayList<T> listParents(T node) {
+    public ArrayList<T> getListChildren(T node) {
         checkRep();
         assert node != null;
-        assert nodesList.containsKey(node);
-
-        ArrayList<T> parents = new ArrayList<>(this.nodesList.get(node).getParents());
-        Collections.sort((ArrayList) parents);
-        checkRep();
-        return parents;
+        Set<T> nodeSet = this.nodesList.get(node);
+        ArrayList<T> sortedNodes = new ArrayList<>(nodeSet);
+        Collections.sort(sortedNodes);
+        return sortedNodes;
     }
 
     /**
-     * Returns a sorted list of children for the given node.
-     * @requires node exists in the graph and all children are Comparable
-     * @modifies nothing
-     * @effects returns a new list containing all children of the node in sorted order
-     */
-    public ArrayList<T> listChildren(T node) {
-        checkRep();
-        assert node != null;
-        assert nodesList.containsKey(node);
-        ArrayList<T> children = new ArrayList<>(nodesList.get(node).getChildren());
-        Collections.sort((ArrayList) children);
-        checkRep();
-        return children;
-    }
-
-    /**
-     * Getting a parent via the edge
-     * @requires node and edge are not null
-     * @modifies nothing
-     * @effects returns the parent of node connected by the edge
-     */
-    public T getParentByEdgeLabel(T node, T edge) {
-        checkRep();
-        assert node != null;
-        assert edge != null;
-        assert nodesList.containsKey(node);
-
-        Node<T> child = this.nodesList.get(node);
-        checkRep();
-        return child.getParentbyEdge(edge);
-    }
-
-    /**
-     * Getting a child via edge label.
-     * @requires node and edge are not null
-     * @modifies nothing
-     * @effects returns the child of node connected by the edge
-     * @throws UnsupportedOperationException
-     */
-    public T getChildByEdgeLabel(T node, T edge) {
-        checkRep();
-        assert node != null;
-        assert edge != null;
-        assert nodesList.containsKey(node);
-
-        Node<T> parent = this.nodesList.get(node);
-        checkRep();
-        return parent.getChildbyEdge(edge);
-    }
-    /**
-     * Checks if a node exists in the graph
-     * @requires node != null
-     * @modifies nothing
-     * @effects returns true if node exists in the graph
+     * Returns whether this graph contains the given node.
+     * @param node the node to check
+     * @return true if this graph contains node, false otherwise
      */
     public boolean containsNode(T node) {
         checkRep();
-        assert node != null;
         return nodesList.containsKey(node);
     }
 
     /**
-     * Returns the number of nodes in the graph
-     * @modifies nothing
-     * @effects returns the number of nodes in this graph
+     * Returns whether this graph contains an edge from parent to child.
+     * @param parent the parent node
+     * @param child the child node
+     * @requires parent != null && child != null
+     * @return true if there is an edge from parent to child, false otherwise
+     */
+    public boolean containsEdge(T parent, T child) {
+        checkRep();
+        if (parent == null || child == null) {
+            return false;
+        }
+        if (!nodesList.containsKey(parent)) {
+            return false;
+        }
+        return nodesList.get(parent).contains(child);
+    }
+
+    /**
+     * Returns the number of nodes in this graph.
+     * @return the number of nodes in this graph
      */
     public int size() {
         checkRep();
         return nodesList.size();
     }
 
-
+    /**
+     * Returns whether this graph is empty.
+     * @return true if this graph contains no nodes, false otherwise
+     */
+    public boolean isEmpty() {
+        checkRep();
+        return nodesList.isEmpty();
+    }
 }
