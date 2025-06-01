@@ -3,7 +3,6 @@
 # Create a graph
 created graph graph1
 
-
 # Add a pair of nodes
 created node n1 with cost 1
 created node n2 with cost 3
@@ -14,13 +13,13 @@ created node n6 with cost 2
 created node n7 with cost 1
 added node n1 to graph1
 added node n2 to graph1
-added node n3 to graph1
 added node n4 to graph1
+added node n3 to graph1
 added node n5 to graph1
-added node n6 to graph1
 added node n7 to graph1
+added node n6 to graph1
 
-# Add an edge
+# Add edges
 added edge from n1 to n2 in graph1
 added edge from n1 to n3 in graph1
 added edge from n2 to n4 in graph1

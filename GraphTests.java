@@ -83,11 +83,9 @@ public class GraphTests extends ScriptFileTests {
 	public void testFindPathSelfLoop() {
 		WeightedNode node = new WeightedNode("Loop", 1);
 		graph.addNode(node);
-		Set<WeightedNodePath> startPaths = new HashSet<>();
-		startPaths.add(new WeightedNodePath(node));
-		Set<WeightedNode> goals = new HashSet<>();
-		goals.add(node);
-		WeightedNodePath result = pathFinder.findShortestPath(startPaths, goals);
+		graph.addEdge(node, node);
+		WeightedNodePath startPath = new WeightedNodePath(node);
+		WeightedNodePath result = pathFinder.findShortestPath(startPath, node);
 		assertNotNull(result);
 		assertEquals(1.0, result.getCost(), 0.001);
 		assertEquals(node, result.getEnd());
@@ -104,11 +102,8 @@ public class GraphTests extends ScriptFileTests {
 		graph.addEdge(a, b);
 		graph.addEdge(b, c);
 
-		Set<WeightedNodePath> starts = new HashSet<>();
-		starts.add(new WeightedNodePath(a));
-		Set<WeightedNode> goals = new HashSet<>();
-		goals.add(c);
-		WeightedNodePath result = pathFinder.findShortestPath(starts, goals);
+		WeightedNodePath start = new WeightedNodePath(a);
+		WeightedNodePath result = pathFinder.findShortestPath(start, c);
 		assertNotNull(result);
 		assertEquals(c, result.getEnd());
 	}
@@ -119,11 +114,8 @@ public class GraphTests extends ScriptFileTests {
 		WeightedNode b = new WeightedNode("B", 1);
 		graph.addNode(a);
 		graph.addNode(b);
-		Set<WeightedNodePath> starts = new HashSet<>();
-		starts.add(new WeightedNodePath(a));
-		Set<WeightedNode> goals = new HashSet<>();
-		goals.add(b);
-		WeightedNodePath result = pathFinder.findShortestPath(starts, goals);
+		WeightedNodePath start = new WeightedNodePath(a);
+		WeightedNodePath result = pathFinder.findShortestPath(start, b);
 		assertNull(result);
 	}
 }
