@@ -166,9 +166,10 @@ public class TestDriver {
 		checkNode (nodeName);
 		Graph<WeightedNode> graph = graphs.get(graphName);
 		WeightedNode node = nodes.get(nodeName);
-		graph.addNode(node);
-		output.println("added node " + nodeName + " to " + graphName);
-  		
+		if (!graph.containsNode(node)) {
+			graph.addNode(node);
+			output.println("added node " + nodeName + " to " + graphName);
+		}
   	}
 
 
@@ -305,26 +306,22 @@ public class TestDriver {
 		Graph<WeightedNode> graph = graphs.get(graphName);
 
 		PathFinder<WeightedNode> pathFinder = new PathFinder<>(graph);
-		List<String> optPathNodesArgs = new ArrayList<>();
-		double currentCost = Double.MAX_VALUE;
-		WeightedNodePath currentPath;
 		WeightedNodePath optPath = null;
-
+		Set<WeightedNodePath> srcPaths = new HashSet<>();
+		Set<WeightedNode> dstNodes = new HashSet<>();
 		for (String sourceArg : sourceArgs) {
-            checkNode(sourceArg);
+			checkNode(sourceArg);
 			WeightedNodePath srcPath = new WeightedNodePath(nodes.get(sourceArg));
-			for (String destArg : destArgs) {
-				checkNode(destArg);
-				WeightedNode dst = nodes.get(destArg);
-				currentPath = pathFinder.findShortestPath(srcPath, dst);
-				if (currentPath != null && currentPath.getCost() < currentCost) {
-					currentCost = currentPath.getCost();
-					optPath = currentPath;
-				}
-			}
+			srcPaths.add(srcPath);
 		}
+		for (String destArg : destArgs) {
+			checkNode(destArg);
+			WeightedNode dst = nodes.get(destArg);
+			dstNodes.add(dst);
+		}
+		optPath = pathFinder.findShortestPath(srcPaths,dstNodes);
 		StringBuilder outStr = new StringBuilder();
-		if (currentCost == Double.MAX_VALUE) {
+		if (optPath == null) {
 			outStr.append("no path found in " + graphName);
 		}
 		else {
@@ -332,7 +329,6 @@ public class TestDriver {
 			for (WeightedNode weightedNode : optPath) {
 				outStr.append(" ").append(weightedNode.getName());
 			}
-
 		}
 		output.println(outStr);
 	  }

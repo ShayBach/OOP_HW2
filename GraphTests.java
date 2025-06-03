@@ -25,7 +25,19 @@ public class GraphTests extends ScriptFileTests {
 		graph = new Graph<>();
 		pathFinder = new PathFinder<>(graph);
 	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testThrowsExceptionAddSameNode() {
+		Graph<WeightedNode> graph = new Graph<>();
+		WeightedNode n1 = new WeightedNode("A",1);
+		graph.addNode(n1);
+		graph.addNode(n1);
+	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testThrowsExceptionEdgeNodesNotInGraph() {
+		Graph<WeightedNode> graph = new Graph<>();
+		graph.addEdge(new WeightedNode("A", 1), new WeightedNode("B", 1)); // Nodes not added yet
+	}
 	// ==== WeightedNode Tests ====
 	@Test
 	public void testWeightedNodeEquality() {
@@ -85,7 +97,11 @@ public class GraphTests extends ScriptFileTests {
 		graph.addNode(node);
 		graph.addEdge(node, node);
 		WeightedNodePath startPath = new WeightedNodePath(node);
-		WeightedNodePath result = pathFinder.findShortestPath(startPath, node);
+		Set<WeightedNodePath> startPaths = new HashSet<>();
+		startPaths.add(startPath);
+		Set<WeightedNode> goalNodes = new HashSet<>();
+		goalNodes.add(node);
+		WeightedNodePath result = pathFinder.findShortestPath(startPaths, goalNodes);
 		assertNotNull(result);
 		assertEquals(1.0, result.getCost(), 0.001);
 		assertEquals(node, result.getEnd());
@@ -101,9 +117,12 @@ public class GraphTests extends ScriptFileTests {
 		graph.addNode(c);
 		graph.addEdge(a, b);
 		graph.addEdge(b, c);
-
 		WeightedNodePath start = new WeightedNodePath(a);
-		WeightedNodePath result = pathFinder.findShortestPath(start, c);
+		Set<WeightedNodePath> startPaths = new HashSet<>();
+		startPaths.add(start);
+		Set<WeightedNode> goalNodes = new HashSet<>();
+		goalNodes.add(c);
+		WeightedNodePath result = pathFinder.findShortestPath(startPaths, goalNodes);
 		assertNotNull(result);
 		assertEquals(c, result.getEnd());
 	}
@@ -115,7 +134,33 @@ public class GraphTests extends ScriptFileTests {
 		graph.addNode(a);
 		graph.addNode(b);
 		WeightedNodePath start = new WeightedNodePath(a);
-		WeightedNodePath result = pathFinder.findShortestPath(start, b);
+		Set<WeightedNodePath> startPaths = new HashSet<>();
+		startPaths.add(start);
+		Set<WeightedNode> goalNodes = new HashSet<>();
+		goalNodes.add(b);
+		WeightedNodePath result = pathFinder.findShortestPath(startPaths, goalNodes);
 		assertNull(result);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testThrowsExceptionPathToNull() {
+		WeightedNode a = new WeightedNode("A", 1);
+		WeightedNode b = new WeightedNode("B", 1);
+		graph.addNode(a);
+		graph.addNode(b);
+		WeightedNodePath start = new WeightedNodePath(a);
+		Set<WeightedNodePath> startPaths = new HashSet<>();
+		startPaths.add(start);
+		WeightedNodePath result = pathFinder.findShortestPath(start, null);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testThrowsExceptionPathFromNull() {
+		WeightedNode a = new WeightedNode("A", 1);
+		WeightedNode b = new WeightedNode("B", 1);
+		graph.addNode(a);
+		graph.addNode(b);
+		Set<WeightedNode> goalNodes = new HashSet<>();
+		goalNodes.add(b);
+		WeightedNodePath result = pathFinder.findShortestPath(null, b);
 	}
 }
