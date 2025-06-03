@@ -1,4 +1,4 @@
-# Multiple output single input path Testing file
+# Multiple input single output path Testing file
 
 # Create a graph
 created graph graph1
@@ -41,4 +41,4 @@ the children of n6 in graph1 are: n7
 the children of n7 in graph1 are:
 
 # Find a path
-shortest path in graph1: n1 n2 n4 n5
+shortest path in graph1: n2 n4 n5 n7
